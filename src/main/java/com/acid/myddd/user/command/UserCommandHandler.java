@@ -51,6 +51,23 @@ public class UserCommandHandler {
         return savedUser;
     }
 
+    // 处理更新密码命令
+    public User handle(UUID userId, UpdatePasswordCommand command) {
+        // 查找用户
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        // 更新密码
+        user.changePassword(command.getCurrentPassword(), command.getNewPassword());
+        User savedUser = userRepository.save(user);
+        
+        // 发布领域事件
+        user.getDomainEvents().forEach(eventPublisher::publishEvent);
+        user.clearDomainEvents();
+        
+        return savedUser;
+    }
+
+
     // 删除用户
     public void deleteUser(UUID id) {
         userRepository.deleteById(id);

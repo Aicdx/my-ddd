@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import com.acid.myddd.user.command.CreateUserCommand;
 import com.acid.myddd.user.command.UpdateEmailCommand;
+import com.acid.myddd.user.command.UpdatePasswordCommand;
 import com.acid.myddd.user.command.UserCommandHandler;
 import com.acid.myddd.user.domain.model.User;
 import com.acid.myddd.user.query.UserQueryService;
@@ -57,6 +58,17 @@ public class UserController {
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
+
+    @PutMapping("/{id}/password")
+    public ResponseEntity<UserDTO> updateUserPassword(
+            @PathVariable UUID id,
+            @RequestBody UpdatePasswordCommand command) {
+        User updatedUser = commandHandler.handle(id, command);
+        return queryService.findById(updatedUser.getId())
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+    
 
     // 删除用户
     @DeleteMapping("/{id}")

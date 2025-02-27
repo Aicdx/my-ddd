@@ -6,6 +6,7 @@ import java.util.UUID;
 
 import com.acid.myddd.user.domain.event.UserEmailChangedEvent;
 import com.acid.myddd.user.domain.event.UserEvent;
+import com.acid.myddd.user.domain.event.UserPasswordChangedEvent;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
@@ -65,6 +66,8 @@ public class User {
             throw new IllegalArgumentException("New password cannot be empty");
         }
         this.password = newPassword; // 实际项目中应该加密
+        // 添加领域事件
+        this.domainEvents.add(new UserPasswordChangedEvent(this.id, currentPassword, newPassword));
     }
     
     public void updateEmail(String newEmail) {
