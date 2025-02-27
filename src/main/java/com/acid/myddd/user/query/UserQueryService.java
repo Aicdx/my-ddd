@@ -1,10 +1,10 @@
-package com.acid.myddd.user.application.query;
+package com.acid.myddd.user.query;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import com.acid.myddd.user.interfaces.dto.UserDTO;
+import com.acid.myddd.user.query.dto.UserDTO;
 
 public interface UserQueryService {
     Optional<UserDTO> findById(UUID id);

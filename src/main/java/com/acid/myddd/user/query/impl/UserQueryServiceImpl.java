@@ -1,4 +1,4 @@
-package com.acid.myddd.user.application.query.impl;
+package com.acid.myddd.user.query.impl;
 
 import java.util.List;
 import java.util.Optional;
@@ -8,9 +8,9 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.acid.myddd.user.application.query.UserQueryService;
 import com.acid.myddd.user.domain.repository.UserRepository;
-import com.acid.myddd.user.interfaces.dto.UserDTO;
+import com.acid.myddd.user.query.UserQueryService;
+import com.acid.myddd.user.query.dto.UserDTO;
 
 @Service
 @Transactional(readOnly = true)

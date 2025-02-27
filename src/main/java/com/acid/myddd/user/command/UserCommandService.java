@@ -1,4 +1,4 @@
-package com.acid.myddd.user.application.command;
+package com.acid.myddd.user.command;
 
 import java.util.UUID;
 
