@@ -12,10 +12,12 @@ public class UserDomainService {
         this.userRepository = userRepository;
     }
     
+    // 检查用户名是否唯一
     public boolean isUsernameUnique(String username) {
         return userRepository.findByUsername(username).isEmpty();
     }
     
+    // 验证新用户信息
     public void validateNewUser(String username, String email) {
         if (!isUsernameUnique(username)) {
             throw new IllegalArgumentException("Username already exists");

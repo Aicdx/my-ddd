@@ -2,6 +2,7 @@ package com.acid.myddd.user.command;
 
 import java.util.UUID;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -11,11 +12,9 @@ import com.acid.myddd.user.domain.repository.UserRepository;
 @Service
 @Transactional
 public class UserCommandService {
-    private final UserRepository userRepository;
-
-    public UserCommandService(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
+    
+    @Autowired
+    private UserRepository userRepository;
 
     public User createUser(String username, String email, String password) {
         User user = new User(username, email, password);

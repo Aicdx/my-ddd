@@ -5,6 +5,7 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,11 +16,10 @@ import com.acid.myddd.user.query.dto.UserDTO;
 @Service
 @Transactional(readOnly = true)
 public class UserQueryServiceImpl implements UserQueryService {
-    private final UserRepository userRepository;
 
-    public UserQueryServiceImpl(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
+    @Autowired
+    private UserRepository userRepository;
+
 
     @Override
     public Optional<UserDTO> findById(UUID id) {
@@ -40,6 +40,7 @@ public class UserQueryServiceImpl implements UserQueryService {
                 .collect(Collectors.toList());
     }
 
+    // 将领域模型转换为DTO
     private UserDTO convertToDTO(com.acid.myddd.user.domain.model.User user) {
         UserDTO dto = new UserDTO();
         dto.setId(user.getId());

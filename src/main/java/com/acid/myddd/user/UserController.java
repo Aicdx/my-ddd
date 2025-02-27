@@ -24,6 +24,7 @@ public class UserController {
         this.queryService = queryService;
     }
 
+    // 创建新用户
     @PostMapping
     public ResponseEntity<UserDTO> createUser(@RequestBody CreateUserCommand command) {
         User user = commandHandler.handle(command);
@@ -32,6 +33,7 @@ public class UserController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    // 根据ID查询用户
     @GetMapping("/{id}")
     public ResponseEntity<UserDTO> getUser(@PathVariable UUID id) {
         return queryService.findById(id)
@@ -39,11 +41,13 @@ public class UserController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    // 查询所有用户
     @GetMapping
     public ResponseEntity<List<UserDTO>> getAllUsers() {
         return ResponseEntity.ok(queryService.findAll());
     }
 
+    // 更新用户邮箱
     @PutMapping("/{id}/email")
     public ResponseEntity<UserDTO> updateUserEmail(
             @PathVariable UUID id,
@@ -54,6 +58,7 @@ public class UserController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    // 删除用户
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable UUID id) {
         commandHandler.deleteUser(id);

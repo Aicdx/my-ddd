@@ -22,22 +22,28 @@ import lombok.Getter;
 @Table(name = "users")
 @Getter
 public class User {
+    // 用户唯一标识
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
     
+    // 用户名，不允许重复
     @Column(unique = true)
     private String username;
     
+    // 邮箱值对象
     @Embedded
     private Email email;
     
+    // 用户密码
     @Column
     private String password;
     
+    // 版本号，用于乐观锁控制
     @Version
     private Long version;
     
+    // 领域事件集合，不持久化
     @Transient
     private List<UserEvent> domainEvents = new ArrayList<>();
     
@@ -64,6 +70,7 @@ public class User {
     public void updateEmail(String newEmail) {
         String oldEmail = this.email.toString();
         this.email = new Email(newEmail);
+        // 添加领域事件
         this.domainEvents.add(new UserEmailChangedEvent(this.id, oldEmail, newEmail));
     }
     

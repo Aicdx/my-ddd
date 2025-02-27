@@ -1,5 +1,7 @@
 package com.acid.myddd.user.eventhandler;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
@@ -7,11 +9,13 @@ import com.acid.myddd.user.domain.event.UserEmailChangedEvent;
 
 @Component
 public class UserEventHandler {
+    private static final Logger logger = LoggerFactory.getLogger(UserEventHandler.class);
     
     @EventListener
     public void handleUserEmailChanged(UserEmailChangedEvent event) {
-        // 处理邮箱变更事件，例如发送通知邮件
-        System.out.println("User " + event.getUserId() + " changed email from " + 
-            event.getOldEmail() + " to " + event.getNewEmail());
+        logger.info("用户 {} 的邮箱从 {} 更改为 {}", 
+            event.getUserId(), 
+            event.getOldEmail(), 
+            event.getNewEmail());
     }
 } 
