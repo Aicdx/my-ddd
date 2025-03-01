@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.acid.myddd.user.infrastructure.persistence.mapper.UserMapper">
+    
+    <resultMap id="userDTOMap" type="com.acid.myddd.user.query.dto.UserDTO">
+        <id column="id" property="id" typeHandler="com.acid.myddd.infrastructure.typehandler.UUIDTypeHandler"/>
+        <result column="username" property="username" jdbcType="VARCHAR"/>
+        <result column="address" property="email" jdbcType="VARCHAR"/>
+    </resultMap>
+    
+    <select id="findUsers" resultMap="userDTOMap">
+        SELECT u.id, u.username, u.address
+        FROM users u
+        <where>
+            <if test="username != null and username != ''">
+                AND u.username LIKE CONCAT('%', #{username}, '%')
+            </if>
+            <if test="email != null and email != ''">
+                AND u.address LIKE CONCAT('%', #{email}, '%')
+            </if>
+        </where>
+    </select>
+    
+    <select id="findById" resultMap="userDTOMap">
+        SELECT u.id, u.username, u.address
+        FROM users u
+        WHERE u.id = #{id,typeHandler=com.acid.myddd.infrastructure.typehandler.UUIDTypeHandler}
+    </select>
+    
+    <select id="findByUsername" resultMap="userDTOMap">
+        SELECT u.id, u.username, u.address
+        FROM users u
+        WHERE u.username = #{username,jdbcType=VARCHAR}
+    </select>
+    
+</mapper> 

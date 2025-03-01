@@ -14,5 +14,21 @@ spring:
       hibernate:
         format_sql: true
 
+mybatis:
+  mapper-locations: classpath*:mapper/*.xml
+  type-aliases-package: com.acid.myddd.user.query.dto
+  type-handlers-package: com.acid.myddd.infrastructure.typehandler
+  configuration:
+    map-underscore-to-camel-case: true
+    default-enum-type-handler: org.apache.ibatis.type.EnumTypeHandler
+    jdbc-type-for-null: NULL
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+pagehelper:
+  helper-dialect: mysql
+  reasonable: true
+  support-methods-arguments: true
+  params: count=countSql
+
 server:
   port: 8980 

@@ -3,49 +3,44 @@ package com.acid.myddd.user.query.impl;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.acid.myddd.user.domain.repository.UserRepository;
+import com.acid.myddd.user.infrastructure.persistence.mapper.UserMapper;
 import com.acid.myddd.user.query.UserQueryService;
 import com.acid.myddd.user.query.dto.UserDTO;
+import com.acid.myddd.user.query.dto.UserQueryParam;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 
 @Service
 @Transactional(readOnly = true)
 public class UserQueryServiceImpl implements UserQueryService {
 
     @Autowired
-    private UserRepository userRepository;
-
+    private UserMapper userMapper;
 
     @Override
     public Optional<UserDTO> findById(UUID id) {
-        return userRepository.findById(id)
-                .map(this::convertToDTO);
+        return Optional.ofNullable(userMapper.findById(id));
     }
 
     @Override
     public Optional<UserDTO> findByUsername(String username) {
-        return userRepository.findByUsername(username)
-                .map(this::convertToDTO);
+        return Optional.ofNullable(userMapper.findByUsername(username));
     }
 
     @Override
     public List<UserDTO> findAll() {
-        return userRepository.findAll().stream()
-                .map(this::convertToDTO)
-                .collect(Collectors.toList());
+        return userMapper.findUsers(new UserQueryParam());
     }
 
-    // 将领域模型转换为DTO
-    private UserDTO convertToDTO(com.acid.myddd.user.domain.model.User user) {
-        UserDTO dto = new UserDTO();
-        dto.setId(user.getId());
-        dto.setUsername(user.getUsername());
-        dto.setEmail(user.getEmail().toString());
-        return dto;
+    @Override
+    public PageInfo<UserDTO> findUsers(UserQueryParam param) {
+        PageHelper.startPage(param.getPageNum(), param.getPageSize());
+        List<UserDTO> users = userMapper.findUsers(param);
+        return new PageInfo<>(users);
     }
 } 

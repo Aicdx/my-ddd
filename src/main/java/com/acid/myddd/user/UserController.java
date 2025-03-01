@@ -1,6 +1,5 @@
 package com.acid.myddd.user;
 
-import java.util.List;
 import java.util.UUID;
 
 import org.springframework.http.ResponseEntity;
@@ -13,6 +12,8 @@ import com.acid.myddd.user.command.UserCommandHandler;
 import com.acid.myddd.user.domain.model.User;
 import com.acid.myddd.user.query.UserQueryService;
 import com.acid.myddd.user.query.dto.UserDTO;
+import com.acid.myddd.user.query.dto.UserQueryParam;
+import com.github.pagehelper.PageInfo;
 
 @RestController
 @RequestMapping("/api/users")
@@ -42,10 +43,10 @@ public class UserController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    // 查询所有用户
+    // 条件查询用户（支持分页）
     @GetMapping
-    public ResponseEntity<List<UserDTO>> getAllUsers() {
-        return ResponseEntity.ok(queryService.findAll());
+    public ResponseEntity<PageInfo<UserDTO>> getUsers(UserQueryParam param) {
+        return ResponseEntity.ok(queryService.findUsers(param));
     }
 
     // 更新用户邮箱
